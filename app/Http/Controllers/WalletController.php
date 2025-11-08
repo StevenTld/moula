@@ -39,6 +39,14 @@ class WalletController extends Controller
     }
 
     /**
+     * Show the form for importing an existing wallet.
+     */
+    public function import()
+    {
+        return view('wallets.import');
+    }
+
+    /**
      * Store a newly created wallet.
      */
     public function store(Request $request)
@@ -75,6 +83,56 @@ class WalletController extends Controller
         return redirect()->route('wallets.show', $wallet->id)
             ->with('success', 'Wallet créé avec succès!')
             ->with('new_wallet', true);
+    }
+
+    /**
+     * Store an imported wallet from private key.
+     */
+    public function storeImport(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'network' => 'required|in:base,base-sepolia',
+            'private_key' => 'required|string',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        // Importer le wallet depuis la clé privée
+        $walletData = $this->walletService->importWallet($request->private_key);
+
+        if (!$walletData['success']) {
+            return back()
+                ->withInput()
+                ->with('error', $walletData['error']);
+        }
+
+        // Vérifier si l'adresse existe déjà pour cet utilisateur
+        $existingWallet = $this->walletRepository->findByAddress($walletData['address'], Auth::id());
+        if ($existingWallet) {
+            return back()
+                ->withInput()
+                ->with('error', 'Ce wallet existe déjà dans votre liste (Adresse: ' . $walletData['address'] . ')');
+        }
+
+        // Obtenir la balance initiale
+        $balanceData = $this->walletService->getBalance($walletData['address'], $request->network);
+        $balance = $balanceData['success'] ? $balanceData['balance'] : 0;
+
+        // Créer le wallet en base de données
+        $wallet = $this->walletRepository->create([
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+            'address' => $walletData['address'],
+            'private_key' => $walletData['private_key'],
+            'network' => $request->network,
+            'balance' => $balance,
+            'description' => $request->description,
+            'is_active' => true,
+        ]);
+
+        return redirect()->route('wallets.show', $wallet->id)
+            ->with('success', 'Wallet importé avec succès!')
+            ->with('imported_wallet', true);
     }
 
     /**

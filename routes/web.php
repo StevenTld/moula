@@ -10,7 +10,7 @@ Route::get('/', function () {
     return auth()->check() ? redirect()->route('home') : redirect()->route('login');
 });
 
-// Dashboard - redirect to home
+// Dashboard - redirect to homee
 Route::get('/dashboard', function () {
     return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
 // Routes pour les wallets (nécessite authentification)
 Route::middleware(['auth'])->group(function () {
     Route::resource('wallets', WalletController::class);
+    Route::get('wallets-import', [WalletController::class, 'import'])->name('wallets.import');
+    Route::post('wallets-import', [WalletController::class, 'storeImport'])->name('wallets.store-import');
     Route::post('wallets/{wallet}/refresh-balance', [WalletController::class, 'refreshBalance'])->name('wallets.refresh-balance');
     Route::get('wallets/{wallet}/export-private-key', [WalletController::class, 'exportPrivateKey'])->name('wallets.export-private-key');
 });

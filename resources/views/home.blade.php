@@ -119,47 +119,52 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <!-- Create Wallet Card -->
             <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg p-8 text-white">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col justify-between h-full">
                     <div>
-                        <h3 class="text-2xl font-bold mb-2">Créer un Nouveau Wallet</h3>
+                        <h3 class="text-xl font-bold mb-2">Créer un Nouveau Wallet</h3>
                         <p class="text-blue-100 mb-6">Générez une nouvelle adresse Base en quelques secondes</p>
-                        <a href="{{ route('wallets.create') }}" class="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-200 shadow-md">
-                            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            Créer Maintenant
-                        </a>
                     </div>
-                    <div class="hidden md:block">
-                        <svg class="h-32 w-32 opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path>
-                            <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path>
+                    <a href="{{ route('wallets.create') }}" class="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-200 shadow-md">
+                        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
+                        Créer Maintenant
+                    </a>
+                </div>
+            </div>
+
+            <!-- Import Wallet Card -->
+            <div class="bg-gradient-to-br from-green-500 to-teal-600 rounded-lg shadow-lg p-8 text-white">
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Importer un Wallet</h3>
+                        <p class="text-green-100 mb-6">Ajoutez un wallet existant avec sa clé privée</p>
                     </div>
+                    <a href="{{ route('wallets.import') }}" class="inline-flex items-center justify-center px-6 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors duration-200 shadow-md">
+                        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        Importer Maintenant
+                    </a>
                 </div>
             </div>
 
             <!-- View Wallets Card -->
             <div class="bg-white rounded-lg shadow-lg p-8 border-2 border-gray-200">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col justify-between h-full">
                     <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Gérer vos Wallets</h3>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Gérer vos Wallets</h3>
                         <p class="text-gray-600 mb-6">Consultez, gérez et surveillez tous vos wallets</p>
-                        <a href="{{ route('wallets.index') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors duration-200 shadow-md">
-                            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                            </svg>
-                            Voir les Wallets
-                        </a>
                     </div>
-                    <div class="hidden md:block">
-                        <svg class="h-32 w-32 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    <a href="{{ route('wallets.index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors duration-200 shadow-md">
+                        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
-                    </div>
+                        Voir les Wallets
+                    </a>
                 </div>
             </div>
         </div>

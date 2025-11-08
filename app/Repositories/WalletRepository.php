@@ -35,11 +35,18 @@ class WalletRepository
      * Find a wallet by address.
      * 
      * @param string $address
+     * @param int|null $userId
      * @return Wallet|null
      */
-    public function findByAddress(string $address): ?Wallet
+    public function findByAddress(string $address, ?int $userId = null): ?Wallet
     {
-        return Wallet::where('address', $address)->first();
+        $query = Wallet::where('address', $address);
+        
+        if ($userId !== null) {
+            $query->where('user_id', $userId);
+        }
+        
+        return $query->first();
     }
 
     /**

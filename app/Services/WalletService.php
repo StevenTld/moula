@@ -117,6 +117,71 @@ class WalletService
     }
 
     /**
+     * Import wallet from private key.
+     * 
+     * @param string $privateKey
+     * @return array
+     */
+    public function importWallet(string $privateKey): array
+    {
+        try {
+            // Normaliser la clé privée
+            $privateKey = trim($privateKey);
+            
+            // Ajouter 0x si absent
+            if (!str_starts_with($privateKey, '0x')) {
+                $privateKey = '0x' . $privateKey;
+            }
+            
+            // Valider le format de la clé privée
+            if (!$this->isValidPrivateKey($privateKey)) {
+                return [
+                    'success' => false,
+                    'error' => 'Clé privée invalide. Elle doit contenir 64 caractères hexadécimaux.',
+                ];
+            }
+            
+            // Générer l'adresse depuis la clé privée
+            $address = $this->privateKeyToAddress($privateKey);
+            
+            return [
+                'success' => true,
+                'address' => $address,
+                'private_key' => $privateKey,
+            ];
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * Validate if a private key is valid.
+     * 
+     * @param string $privateKey
+     * @return bool
+     */
+    public function isValidPrivateKey(string $privateKey): bool
+    {
+        // Supprimer le préfixe 0x si présent
+        $key = str_replace('0x', '', $privateKey);
+        
+        // Vérifier que c'est exactement 64 caractères hexadécimaux
+        if (!preg_match('/^[a-fA-F0-9]{64}$/', $key)) {
+            return false;
+        }
+        
+        // Vérifier que ce n'est pas une clé nulle
+        if ($key === str_repeat('0', 64)) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
      * Validate if an address is a valid Ethereum address.
      * 
      * @param string $address
