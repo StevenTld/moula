@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use kornrunner\Keccak;
+use Elliptic\EC;
 
 class WalletService
 {
@@ -79,21 +80,17 @@ class WalletService
      */
     private function privateKeyToPublicKey(string $privateKey): string
     {
-        // Utiliser OpenSSL pour générer la clé publique
-        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+        // Utiliser la librairie Elliptic pour générer la clé publique
+        $ec = new EC('secp256k1');
         
-        $privateKeyBin = hex2bin($privateKey);
-        $publicKey = '';
-        $result = secp256k1_ec_pubkey_create($context, $publicKey, $privateKeyBin);
+        // Créer une paire de clés depuis la clé privée
+        $key = $ec->keyFromPrivate($privateKey, 'hex');
         
-        if ($result === 1) {
-            $serialized = '';
-            secp256k1_ec_pubkey_serialize($context, $serialized, $publicKey, SECP256K1_EC_UNCOMPRESSED);
-            // Retirer le premier byte (0x04) qui indique le format non compressé
-            return substr(bin2hex($serialized), 2);
-        }
+        // Obtenir la clé publique au format non compressé
+        $publicKey = $key->getPublic(false, 'hex');
         
-        throw new Exception('Failed to generate public key');
+        // Retirer le premier byte (04) qui indique le format non compressé
+        return substr($publicKey, 2);
     }
 
     /**
