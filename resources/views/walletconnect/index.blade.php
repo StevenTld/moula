@@ -205,15 +205,30 @@ function refreshBalance() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    const address = window.WalletConnect.getAddress()
-    const chainId = window.WalletConnect.getChain()
-    
-    if (address && chainId) {
-        const event = new CustomEvent('walletconnect:accountChanged', {
-            detail: { address, chainId, isConnected: true }
-        })
-        window.dispatchEvent(event)
-    }
+    // Petit délai pour laisser WalletConnect s'initialiser
+    setTimeout(() => {
+        checkConnectionState()
+    }, 500)
 })
+
+// Vérifier périodiquement l'état de connexion
+setInterval(() => {
+    checkConnectionState()
+}, 2000)
+
+// Fonction pour vérifier l'état de connexion
+function checkConnectionState() {
+    if (window.WalletConnect && typeof window.WalletConnect.getAddress === 'function') {
+        const address = window.WalletConnect.getAddress()
+        const chainId = window.WalletConnect.getChain()
+        
+        if (address && chainId) {
+            const event = new CustomEvent('walletconnect:accountChanged', {
+                detail: { address, chainId, isConnected: true }
+            })
+            window.dispatchEvent(event)
+        }
+    }
+}
 </script>
 @endsection
