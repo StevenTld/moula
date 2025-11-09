@@ -44,6 +44,16 @@
                         <span>Mes Wallets</span>
                     </a>
                     @endif
+                    @if(Route::has('contracts.index'))
+                    <a href="{{ route('contracts.index') }}" class="navbar-link {{ request()->routeIs('contracts.*') ? 'active' : '' }}">
+                        <svg class="navbar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>Contrats</span>
+                    </a>
+                    @endif
                     <button id="wallet-connect-btn" class="navbar-link navbar-link-special">
                         <svg class="navbar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>

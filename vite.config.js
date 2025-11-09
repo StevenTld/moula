@@ -16,6 +16,8 @@ export default defineConfig({
                 'resources/css/wallets-edit.css',
                 'resources/css/walletconnect.css',
                 'resources/css/profile.css',
+                'resources/css/contracts-index.css',
+                'resources/css/contracts-create.css',
                 'resources/js/app.js'
             ],
             refresh: true,

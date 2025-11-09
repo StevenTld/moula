@@ -45,4 +45,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relation avec les wallets
+     */
+    public function wallets()
+    {
+        return $this->hasMany(Wallet::class);
+    }
+
+    /**
+     * Relation avec les contrats intelligents
+     */
+    public function smartContracts()
+    {
+        return $this->hasMany(SmartContract::class);
+    }
+
+    /**
+     * Relation avec les interactions de contrats
+     */
+    public function contractInteractions()
+    {
+        return $this->hasMany(ContractInteraction::class);
+    }
 }

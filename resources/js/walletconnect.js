@@ -225,7 +225,8 @@ window.WalletConnect = {
     disconnect: disconnectWallet,
     getAddress: getConnectedAddress,
     getChain: getConnectedChain,
-    modal
+    modal,
+    wagmiConfig  // Exposer la configuration pour le service de contrat
 }
 
 // Initialiser automatiquement au chargement du module
