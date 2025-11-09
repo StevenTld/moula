@@ -144,6 +144,8 @@ function updateWalletUI(address, chainId) {
         
         if (disconnectButton) {
             disconnectButton.classList.remove('hidden')
+            // Ajouter l'écouteur d'événement pour la déconnexion
+            disconnectButton.onclick = disconnectWallet
         }
         
         // Afficher le nom du réseau
@@ -165,6 +167,7 @@ function updateWalletUI(address, chainId) {
         
         if (disconnectButton) {
             disconnectButton.classList.add('hidden')
+            disconnectButton.onclick = null
         }
         
         const networkDisplay = document.getElementById('wallet-network-display')
@@ -176,6 +179,8 @@ function updateWalletUI(address, chainId) {
 
 // Initialiser l'UI au chargement
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('WalletConnect: DOM loaded')
+    
     // Initialiser le wallet
     await initializeWallet()
     
@@ -187,15 +192,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateWalletUI(connectedAddress, connectedChainId)
     }
     
-    // Ajouter les écouteurs d'événements
+    // Ajouter l'écouteur d'événement pour le bouton de connexion
     const connectButton = document.getElementById('wallet-connect-btn')
+    console.log('WalletConnect: Connect button found:', !!connectButton)
     if (connectButton) {
-        connectButton.addEventListener('click', connectWallet)
-    }
-    
-    const disconnectButton = document.getElementById('wallet-disconnect-btn')
-    if (disconnectButton) {
-        disconnectButton.addEventListener('click', disconnectWallet)
+        connectButton.addEventListener('click', () => {
+            console.log('WalletConnect: Button clicked')
+            connectWallet()
+        })
+        console.log('WalletConnect: Event listener added')
     }
 })
 
@@ -222,3 +227,39 @@ window.WalletConnect = {
     getChain: getConnectedChain,
     modal
 }
+
+// Initialiser automatiquement au chargement du module
+;(async () => {
+    console.log('WalletConnect: Module loaded')
+    
+    // Attendre que le DOM soit prêt
+    if (document.readyState === 'loading') {
+        await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve))
+    }
+    
+    console.log('WalletConnect: Initializing...')
+    await initializeWallet()
+    
+    // Mettre à jour l'UI si déjà connecté
+    const account = getAccount(wagmiConfig)
+    if (account.isConnected) {
+        connectedAddress = account.address
+        connectedChainId = account.chainId
+        updateWalletUI(connectedAddress, connectedChainId)
+    }
+    
+    // Ajouter l'écouteur d'événement pour le bouton de connexion
+    setTimeout(() => {
+        const connectButton = document.getElementById('wallet-connect-btn')
+        console.log('WalletConnect: Connect button found:', !!connectButton)
+        if (connectButton) {
+            connectButton.addEventListener('click', () => {
+                console.log('WalletConnect: Button clicked!')
+                connectWallet()
+            })
+            console.log('WalletConnect: Event listener added to connect button')
+        } else {
+            console.error('WalletConnect: Connect button not found!')
+        }
+    }, 100)
+})()

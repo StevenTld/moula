@@ -70,6 +70,12 @@
     position: relative;
 }
 
+.navbar-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    transition: all 0.3s ease;
+}
+
 .navbar-link::after {
     content: '';
     position: absolute;
@@ -87,6 +93,10 @@
     background-color: rgba(212, 175, 55, 0.1);
 }
 
+.navbar-link:hover .navbar-icon {
+    transform: scale(1.1);
+}
+
 .navbar-link:hover::after {
     width: 80%;
 }
@@ -98,6 +108,65 @@
 
 .navbar-link.active::after {
     width: 80%;
+}
+
+.navbar-link.active .navbar-icon {
+    color: var(--gold);
+}
+
+/* WalletConnect Special Button */
+.navbar-link-special {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-link-special::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.navbar-link-special:hover::before {
+    left: 100%;
+}
+
+.navbar-link-special::after {
+    background: linear-gradient(90deg, var(--blue) 0%, var(--gold) 100%);
+}
+
+.navbar-link-special:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: var(--blue-light);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.navbar-link-special.active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(212, 175, 55, 0.25) 100%);
+    border-color: var(--blue);
+    color: var(--blue-light);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+}
+
+.navbar-link-special.active .navbar-icon {
+    color: var(--blue-light);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+    }
 }
 
 /* User Section */
@@ -504,10 +573,20 @@
     .navbar-link {
         width: 100%;
         padding: 0.75rem 1rem;
+        justify-content: flex-start;
     }
     
     .navbar-link::after {
         display: none;
+    }
+    
+    .navbar-link::before {
+        display: none;
+    }
+    
+    .navbar-icon {
+        width: 1.25rem;
+        height: 1.25rem;
     }
     
     .navbar-user {
@@ -560,4 +639,16 @@
         width: 100%;
         text-align: center;
     }
+    
+    .navbar-link span {
+        font-size: 0.875rem;
+    }
 }
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.hidden {
+    display: none !important;
+}
+

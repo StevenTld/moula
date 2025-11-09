@@ -30,11 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('wallets/{wallet}/export-private-key', [WalletController::class, 'exportPrivateKey'])->name('wallets.export-private-key');
 });
 
-// WalletConnect routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/walletconnect', [WalletConnectController::class, 'index'])->name('walletconnect.index');
-});
-
 // Profile routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

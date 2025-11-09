@@ -1,51 +1,614 @@
 /* ============================================
-   WALLETCONNECT - Page de connexion Web3
+   WALLETCONNECT - Intégration WalletConnect SDK
    ============================================ */
 
 .walletconnect-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 2rem auto;
 }
 
+/* Header */
 .walletconnect-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .walletconnect-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .walletconnect-subtitle {
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
 }
 
-/* Connection card */
-.connection-card {
-    background-color: var(--bg-card);
+/* Connection Status Card */
+.connection-status-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 31, 46, 0.8) 100%);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot.status-connected {
+    background: var(--success);
+    box-shadow: 0 0 15px var(--success);
+}
+
+.status-dot.status-disconnected {
+    background: var(--text-muted);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.status-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.connection-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.connection-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detail-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.detail-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.detail-value {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+}
+
+.btn-disconnect {
+    padding: 0.625rem 1.5rem;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-lg);
+    color: var(--error);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-disconnect:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--error);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* WalletConnect Widget */
+.walletconnect-widget {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 31, 46, 0.8) 100%);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    margin-bottom: 3rem;
+    min-height: 200px;
+}
+
+#walletConnectButton {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Personnalisation du bouton Web3Modal */
+#walletConnectButton w3m-button {
+    --w3m-accent: var(--gold);
+}
+
+/* Connected Actions */
+.connected-actions {
+    margin-bottom: 3rem;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 31, 46, 0.8) 100%);
     border: 1px solid var(--border-primary);
     border-radius: var(--radius-xl);
     padding: 2rem;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
-.connection-status {
+.action-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.action-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    transition: all 0.3s ease;
+}
+
+.action-icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.action-card:hover .action-icon {
+    transform: scale(1.1) rotate(5deg);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(59, 130, 246, 0.25) 100%);
+}
+
+.action-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.action-description {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.btn-action {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    border: none;
+    border-radius: var(--radius-lg);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.4);
+}
+
+/* Info Section */
+.info-section {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 31, 46, 0.8) 100%);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+}
+
+.info-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.info-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-list li {
+    padding: 0.75rem 0;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(45, 55, 72, 0.5);
+}
+
+.info-list li:last-child {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .walletconnect-title {
+        font-size: 2rem;
+    }
+    
+    .connection-status-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .connection-info {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-disconnect {
+        width: 100%;
+    }
+    
+    .walletconnect-widget {
+        padding: 2rem 1rem;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-shape 10s ease-in-out infinite;
+}
+
+@keyframes float-shape {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(50px, -30px) rotate(120deg);
+    }
+    66% {
+        transform: translate(-30px, 40px) rotate(240deg);
+    }
+}
+
+@keyframes pulse-shape {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.5;
+    }
+}
+
+.hero-content-wc {
+    position: relative;
+    z-index: 1;
+}
+
+/* WalletConnect Logo */
+.wc-logo-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.wc-logo-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse-glow-wc 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-wc {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.wc-logo {
+    position: relative;
+    width: 150px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.wc-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.wc-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Connection Status Card */
+.connection-status-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 31, 46, 0.8) 100%);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot.status-connected {
+    background: var(--success);
+    box-shadow: 0 0 15px var(--success);
+}
+
+.status-dot.status-disconnected {
+    background: var(--text-muted);
+}
+
+.status-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.connection-info {
+    display: flex;
+    gap: 2rem;
+}
+
+.info-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.info-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.info-value {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+}
+
+/* Actions Grid */
+.wc-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.wc-action-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 31, 46, 0.8) 100%);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.wc-action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.wc-action-card:hover::before {
+    left: 100%;
+}
+
+.wc-action-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.action-card-icon {
+    width: 5rem;
+    height: 5rem;
+    margin: 0 auto 1.5rem;
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+}
+
+.action-card-icon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.icon-connect {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.05) 100%);
+    color: var(--blue);
+}
+
+.icon-scan {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 100%);
+    color: var(--gold);
+}
+
+.icon-sessions {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%);
+    color: #a855f7;
+}
+
+.wc-action-card:hover .action-card-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.action-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.action-card-description {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.btn-action {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-primary);
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    margin-bottom: 2rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-action svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.btn-primary-action {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+}
+
+.btn-secondary-action {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--bg-primary);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-secondary-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+}
+
+.btn-tertiary-action {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.8) 0%, rgba(168, 85, 247, 0.6) 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+}
+
+.btn-tertiary-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(168, 85, 247, 0.5);
 }
 
 .status-indicator {
